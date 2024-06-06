@@ -1,0 +1,54 @@
+form {
+    margin: 50px auto;
+    width: 800px;
+    height: 400px;
+    box-shadow: 0 0 2px #3e3e3e;
+    padding: 30px;
+    text-align: center;
+}
+ 
+.uploader:before {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  border: dashed 2px #fafafa;
+  color: #fafafa;
+  font-size: 14px;
+  content: 'drag and drop your file here';
+  pointer-events: none;
+}
+
+.uploader input {
+  display: block;
+  position: absolute;
+  top: 0; left: 0;
+  width: 999px; height: 999px;
+  font-size: 999px;
+  opacity: 0;
+}
+
+#submit-btn {
+    font-weight: bold;
+    margin-top: 20px;
+    border-radius: 3px;
+    width: 200px;
+    height: 45px;
+    background-color: rgba(108, 168, 255, .7);
+    border: none;
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.6);
+    opacity: .6;
+    cursor: pointer;
+}
+#submit-btn:hover {
+    background-color: rgba(108, 168, 255, 1.0);
+}
+#submit-btn:active {
+    position: relative;
+    top: 5px;
+    box-shadow: none;
+}
