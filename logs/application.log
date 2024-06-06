@@ -27,3 +27,21 @@
 [2024-06-06T17:43:24.679] [ERROR] application - alert is not defined
 [2024-06-06T17:44:17.957] [INFO] application - Application listening at :3000
 [2024-06-06T17:46:31.018] [INFO] application - Application listening at :3000
+[2024-06-06T17:51:46.653] [INFO] application - Application listening at :3000
+[2024-06-06T17:57:27.802] [INFO] application - Application listening at :3000
+[2024-06-06T18:00:22.216] [INFO] application - Application listening at :3000
+[2024-06-06T18:06:29.947] [INFO] application - Application listening at :3000
+[2024-06-06T18:09:55.506] [INFO] application - Application listening at :3000
+[2024-06-06T18:12:26.334] [ERROR] application - Command failed: C:/home/python3111x64/python.exe  ./app/PyVista/stl2html@WebApps.py  ./Joukowsky-airfoil.stl
+Traceback (most recent call last):
+  File "C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\stl2html@WebApps.py", line 233, in <module>
+    main()
+  File "C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\stl2html@WebApps.py", line 81, in main
+    mesh = pv.read(path_3d)
+           ^^^^^^^^^^^^^^^^
+  File "C:\home\python3111x64\Lib\site-packages\pyvista\core\utilities\fileio.py", line 174, in read
+    raise FileNotFoundError(f'File ({filename}) not found')
+FileNotFoundError: File (C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\Joukowsky-airfoil.stl) not found
+
+[2024-06-06T18:13:14.192] [INFO] application - Application listening at :3000
+[2024-06-06T18:15:24.367] [INFO] application - Application listening at :3000
