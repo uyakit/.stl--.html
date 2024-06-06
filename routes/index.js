@@ -31,7 +31,7 @@ function exec_stl2html(fname)
 let fname;
 
 router.get("/", (req, res) => {
-	res.render("./index.ejs");
+	res.render("./index.ejs",{ fname } );
 });
 
 router.post("/upload", (req, res) => {
