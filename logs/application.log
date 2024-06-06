@@ -1,0 +1,5 @@
+[2024-06-06T12:32:42.915] [INFO] application - Application listening at :3000
+[2024-06-06T12:32:49.192] [ERROR] application - val_alpha is not defined
+[2024-06-06T12:32:50.343] [ERROR] application - val_alpha is not defined
+[2024-06-06T12:33:42.754] [ERROR] application - val_alpha is not defined
+[2024-06-06T12:33:49.786] [INFO] application - Application listening at :3000
