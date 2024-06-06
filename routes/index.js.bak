@@ -11,10 +11,8 @@ const fs = require('fs');
 const subproc = require('child_process');
 
 //==================================================================
-function exec_stl2html(fname)
+function exec_stl2html()
 {
-	// ------------------------------------------------------
-	console.log(fname);
 	// ------------------------------------------------------
 	// .stl -> .html
 	//
@@ -28,17 +26,17 @@ function exec_stl2html(fname)
 
 // https://zenn.dev/wkb/books/node-tutorial/viewer/todo_03
 
-let fname;
 
+let val_alpha;
 router.get("/", (req, res) => {
 	res.render("./index.ejs");
 });
 
 router.post("/upload", (req, res) => {
 
-	fname = parseFloat(req.body.fname);
+	val_alpha = parseFloat(req.body.alpha_num);
 	
-	exec_stl2html(fname);
+	exec_stl2html(val_alpha);
 	
 	// https://qiita.com/riversun/items/7f720ae472289a281e3d
 	res.set(

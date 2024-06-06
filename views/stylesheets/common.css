@@ -6,7 +6,7 @@ form {
     padding: 30px;
     text-align: center;
 }
- 
+
 .uploader:before {
   display: flex;
   align-items: center;

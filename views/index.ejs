@@ -6,7 +6,8 @@
 	<meta charset="utf-8" />
 	<!-- <meta name="viewport" content="width=1200, initial-scale=1.0" /> -->
 	<title>Get .html where .stl Embedded</title>
-	<link rel="stylesheet" href="/public/stylesheets/common.css" rel="stylesheet" />
+	<link rel="stylesheet" href="/views/stylesheets/common.css" rel="stylesheet" />
+	<link rel="stylesheet" href="d&d.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -15,10 +16,11 @@
 		<div class="uploader">
 			<i class="fas fa-cloud-upload-alt"></i>
 			<p>Drag and drop a file or click</p>
-			<input type="file" name="file">
+			<input type="file" name="file" id="fname" name="fname">
 		</div>
 		<button type="submit" id="submit-btn">Embed</button>
 	</form>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 </body>
 
 

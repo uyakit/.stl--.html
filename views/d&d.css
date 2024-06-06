@@ -1,0 +1,24 @@
+.upload-area {
+    margin: auto;
+    width: 100%;
+    height: 100px;
+    position: relative;
+    border: 1px dotted rgba(0, 0, 0, .4);
+}
+.upload-area  p {
+  position: absolute;
+  top: 14px;
+  left: 50px;
+  opacity: .8;
+}
+.upload-area  p.mt-4 {
+  margin-top:35px;
+}
+.upload-area #fileInput {
+    top: 0;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}

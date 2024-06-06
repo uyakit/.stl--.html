@@ -35,6 +35,7 @@ const upload = multer({ storage: storage });
 
 // Static resources routing.
 app.use("/public", express.static(path.join(__dirname, "/public")));
+app.use("/views", express.static(path.join(__dirname, "/views")));
 app.use("/app", express.static(path.join(__dirname, "/app")));
 app.use("/logs", express.static(path.join(__dirname, "/logs")));
 
@@ -47,11 +48,9 @@ app.use("/", require("./routes/index.js"));
 // Set application log.
 app.use(logger_application());
 
-app.get('/upload', (req, res) => res.sendFile(path.join(__dirname, 'public/upload.html')));
-
 app.post('/upload', upload.single('file'), function (req, res) {
     console.log(req.file);
-    res.send(req.file.originalname + ' has been created. ;)');
+    res.send('Here you go ;)\n\n' + req.file.originalname);
   });
 
 // Execute web application.
