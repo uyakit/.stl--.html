@@ -67,7 +67,7 @@
 						</div>
 						<br>
 						<div style="text-align:right;">
-							<a href="./public/MarbleBust.stl" target="_blank" style="color:rgba(21, 153, 191, 0.8);"><u># Sample .stl to test</u></a>
+							<a href="./public/MarbleBust.stl" target="_blank" style="color:rgba(21, 153, 191, 0.8);"><u># Sample .stl to test [3.4 MB]</u></a>
 						</div>
 						<div id="upFileWrap">
 							<div id="upFileWrap_noPrev">
@@ -173,12 +173,16 @@
 				setFile: function(file){
 					let ext = file.name.split(".").pop();
 					if(ext == 'stl') {
-						let _upFileWrap = document.getElementById('upFileWrap');
-						_upFileWrap.className = 'selected';
-						
-						document.getElementById('file_prop').innerText = file.name + '\n( ' + Math.ceil((file.size)/1024).toLocaleString() + ' KB)';
-						
-						document.getElementById("btnSubmit").disabled = false;
+						if(file.size < (20 * Math.pow(1024, 2))) {
+							let _upFileWrap = document.getElementById('upFileWrap');
+							_upFileWrap.className = 'selected';
+							
+							document.getElementById('file_prop').innerText = file.name + '\n( ' + Math.ceil((file.size)/1024).toLocaleString() + ' KB)';
+							
+							document.getElementById("btnSubmit").disabled = false;
+						} else {
+							alert(".stl available just under '20MB' !");
+						}
 					} else {
 						alert('Just .stl available !');
 					}
@@ -196,25 +200,21 @@
 			const box = document.getElementById('spinnerWrap');
 			
 			document.addEventListener('DOMContentLoaded', (event) => {
-				box.classList.add('hide');
 				box.style.display = 'none';
 				func.ready();
 			});
 			
 			window.addEventListener('load', (event) => {
-				box.classList.add('hide');
 				box.style.display = 'none';
 				func.loaded();
 				document.getElementById("btnSubmit").disabled = true;
 			});
 			
 			btn.addEventListener('click', () => {
-				box.classList.add('show');
 				box.style.display = 'block';
 			});
 			
 			btn.addEventListener('blur', () => {
-				box.classList.add('hide');
 				box.style.display = 'none';
 			});
 			// ======================================================
