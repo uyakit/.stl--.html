@@ -1,5 +1,5 @@
 ---
-title: "[Joukowsky Airfoil 2D Modeler | README](https://joukowsky-airfoil.azurewebsites.net/public/README.html)"
+title: "[.stl Data Embedded Just in One .html file | README](https://stl--html.azurewebsites.net/public/README.html)"
 date: Released under the [MIT License](https://opensource.org/licenses/mit-license.php)
 ---
 
@@ -7,7 +7,7 @@ date: Released under the [MIT License](https://opensource.org/licenses/mit-licen
 ### Introduction
 
 <p style="text-indent:2em; font-size: 115%;">
-<font color="MediumSeaGreen">The wing cross section</font> modeler by parameter tuning; <font color="MediumSeaGreen">AoA</font>, <font color="MediumSeaGreen">Thickness</font>, <font color="MediumSeaGreen">Warpage</font>, and <font color="MediumSeaGreen">Chord</font>.
+Embed .stl data <font color="MediumSeaGreen">just in one .html</font> file together with <font color="MediumSeaGreen">the mouse control</font>.
 </p>
 
 ### Requirements
@@ -26,16 +26,13 @@ Available now; No more additional installations needed.
 
 <p style="text-indent:3em; font-size: 115%;">
 
-1. Visit the [main site](https://joukowsky-airfoil.azurewebsites.net/).
+1. Visit the [main site](https://stl--html.azurewebsites.net/).
 
-2. Tune up each of parameters as you like.
+2. Specify a .stl file to be embedded.
 
-3. Download .stl and .csv file which contains the point cloud about the wing cross section outline.
-
-4. Check the result with the preferred [online 3D viewer](https://sharecad.org/) of yours.
-
+3. Click 'Download .html' button to download 'all-in-one' .html file.
 </p>
 
-![](./Joukowsky-airfoil_Overview.gif){ width=90% }
+![](./stl2html.js.gif){ width=90% }
 <br>
 <br>

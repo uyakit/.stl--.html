@@ -59,7 +59,7 @@ function clearStlHtml(dir)
 router.get("/", (req, res) => {
 	clearStlHtml("./app/PyVista/");
 	res.render("./index.ejs");
-})
+});
 // --------------------------------------
 router.post("/", upload.any(), (req, res) => {
 	// console.log('originalname : ' + req.files[0].originalname);
