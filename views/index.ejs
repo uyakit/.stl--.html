@@ -53,6 +53,7 @@
 		</style>
 		<link rel="stylesheet" href="/views/stylesheets/common.css" />
 		<link rel="stylesheet" href="/views/stylesheets/bootstrap.4.3.1.min.css" />  <!-- https://getbootstrap.jp/docs/4.5/getting-started/introduction/ -->
+		<link rel="stylesheet" href="/views/stylesheets/spinner.css" />
 	</head>
 	
 	<body>
@@ -98,6 +99,13 @@
 			</form>
 			<%- include("./_share/footer.ejs") %>
 		</div>
+		
+		<div id="spinnerWrap" class="box">
+			<div id="spinner" class="spinner crcl" style="color:rgba(21, 214, 25, 0.9);">
+				<span>Processing...</span>
+			</div>
+		</div>
+		
 		<script>
 			<!-- https://kuwk.jp/blog/dd/ -->
 			// ------------------------------------------------------
@@ -184,14 +192,30 @@
 			};
 			// ------------------------------------------------------
 			func = new funcClass();
+			const btn = document.getElementById('btnSubmit');
+			const box = document.getElementById('spinnerWrap');
 			
-			document.addEventListener("DOMContentLoaded", function(e) {
+			document.addEventListener('DOMContentLoaded', (event) => {
+				box.classList.add('hide');
+				box.style.display = 'none';
 				func.ready();
 			});
 			
-			window.addEventListener('load', function(){
+			window.addEventListener('load', (event) => {
+				box.classList.add('hide');
+				box.style.display = 'none';
 				func.loaded();
 				document.getElementById("btnSubmit").disabled = true;
+			});
+			
+			btn.addEventListener('click', () => {
+				box.classList.add('show');
+				box.style.display = 'block';
+			});
+			
+			btn.addEventListener('blur', () => {
+				box.classList.add('hide');
+				box.style.display = 'none';
 			});
 			// ======================================================
 			//Hamburger menu

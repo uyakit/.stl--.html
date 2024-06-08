@@ -1,0 +1,74 @@
+/* https://digipress.info/tech/css-spinner-animation-demo/  */
+
+.spinner {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	transform-origin: center;
+	width: 240px;
+	height: 240px;
+}
+.spinner span {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 24px;
+}
+.spinner.crcl {
+	border-radius: 50%;
+	border-width: 24px;
+	border-style: solid;
+	border-color:  rgba(21, 214, 25, 0.06) rgba(21, 214, 25, 0.24) rgba(21, 214, 25, 0.12);
+	-webkit-animation: spinner_crcl 1.5s infinite linear forwards;
+	animation: spinner_crcl 1.5s infinite linear forwards;
+}
+.spinner.crcl span {
+	animation: spinner_loading_text 1.5s infinite linear forwards reverse;
+}
+
+/* ローディング表示/非表示 */
+.box.hide{
+	opacity:0;
+	visibility:hidden;
+	/* pointer-events:none; */
+}
+
+.box.show{
+	opacity:1;
+	visibility:visible;
+	/* pointer-events:none; */
+}
+
+@-webkit-keyframes spinner_crcl {
+	0% {
+		transform: translate(-50%, -50%) rotate(0);
+	}
+	100% {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+@keyframes spinner_crcl {
+	0% {
+		transform: translate(-50%, -50%) rotate(0);
+	}
+	100% {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+@keyframes spinner_loading_text {
+	0% {
+		opacity: 1;
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
+	50% {
+		opacity: 0;
+		transform: translate(-50%, -50%) rotate(180deg);
+	}
+	100% {
+		opacity: 1;
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
