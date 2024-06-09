@@ -62,6 +62,7 @@ router.get("/", (req, res) => {
 });
 // --------------------------------------
 router.post("/", upload.any(), (req, res) => {
+	
 	// console.log('originalname : ' + req.files[0].originalname);
 	// console.log('destination : ' + req.files[0].destination);
 	let fname_html = req.files[0].originalname.split('.').slice(0, -1).join('.') + '.html';
@@ -83,5 +84,5 @@ router.post("/", upload.any(), (req, res) => {
 	
 	// res.redirect('/');
 });
-// --------------------------------------
+// --------------------------------
 module.exports = router;

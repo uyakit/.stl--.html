@@ -67,7 +67,7 @@
 						</div>
 						<br>
 						<div style="text-align:right;">
-							<a href="./public/MarbleBust.stl" target="_blank" style="color:rgba(21, 153, 191, 0.8);"><u># Sample .stl to test [3.4 MB]</u></a>
+							<a href="./public/MarbleBust.stl" target="_blank" style="color:rgba(21, 153, 191, 0.8);"># <u>Sample .stl to test</u>&nbsp;[3.4 MB]</a>
 						</div>
 						<div id="upFileWrap">
 							<div id="upFileWrap_noPrev">
@@ -101,7 +101,7 @@
 		</div>
 		
 		<div id="spinnerWrap" class="box">
-			<div id="spinner" class="spinner crcl" style="color:rgba(21, 214, 25, 0.9);">
+			<div id="spinner" class="spinner crcl" style="color:rgba(10, 252, 82, 0.9);">
 				<span>Processing...</span>
 			</div>
 		</div>
@@ -207,14 +207,19 @@
 			window.addEventListener('load', (event) => {
 				box.style.display = 'none';
 				func.loaded();
-				document.getElementById("btnSubmit").disabled = true;
+				btn.disabled = true;
 			});
 			
-			btn.addEventListener('click', () => {
+			btn.addEventListener('click', (event) => {
 				box.style.display = 'block';
+				
+				// if (status == 'working') {
+				// 	event.stopPropagation();
+				// 	event.preventDefault();
+				// }
 			});
 			
-			btn.addEventListener('blur', () => {
+			btn.addEventListener('blur', (event) => {
 				box.style.display = 'none';
 			});
 			// ======================================================

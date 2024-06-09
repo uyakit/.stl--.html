@@ -9,8 +9,7 @@
 	z-index: 9999;
 	-webkit-transition: all 1.2s ease; /* 1.2秒でフェードアウト */
 	        transition: all 1.2s ease;
-	color: #fff; /* ローディングアニメーションカラー */
-	background-color: rgba(0, 0, 0, 0.2); /* 背景カラー */
+	background-color: rgba(181, 162, 150, 0.2); /* 背景カラー */
 	}
 
 .spinner {
@@ -33,7 +32,7 @@
 	border-radius: 50%;
 	border-width: 24px;
 	border-style: solid;
-	border-color: rgba(21, 214, 25, 0.24) rgba(21, 214, 25, 0.08) rgba(21, 214, 25, 0.16);
+	border-color: rgba(10, 252, 82, 0.32) rgba(10, 252, 82, 0.08) rgba(10, 252, 82, 0.24);
 	-webkit-animation: spinner_crcl 1.5s infinite linear forwards;
 	animation: spinner_crcl 1.5s infinite linear forwards;
 }
