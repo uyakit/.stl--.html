@@ -8,7 +8,6 @@
 /* ------------------------------------------------------------------- */
 html, body {
   height: 100%;
-  min-height:400px;
   min-width:400px;
   overflow-x: hidden;  /* 横スクロールのみ無効 */
 }
@@ -53,6 +52,11 @@ html, body {
 .nav-list a {
   text-decoration: none; /* アンダーラインなし */
   color: rgba(245, 245, 245, .95); /* リンク色 */
+}
+
+.nav-list a:hover {
+  text-decoration: none; /* アンダーラインなし */
+  color: rgba(97, 250, 240, .95); /* リンク色 */
 }
 
 /* モバイルメニュー用スタイル */
