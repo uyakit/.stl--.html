@@ -63,3 +63,5 @@ txtStatus is not defined
 [2024-06-09T09:59:40.287] [ERROR] application - EPERM: operation not permitted, open 'C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\MarbleBust.stl'
 [2024-06-09T09:59:56.556] [INFO] application - Application listening at :3000
 [2024-06-09T10:12:12.184] [INFO] application - Application listening at :3000
+[2024-06-09T10:54:18.137] [INFO] application - Application listening at :3000
+[2024-06-09T11:04:56.721] [INFO] application - Application listening at :3000

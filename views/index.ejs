@@ -201,13 +201,14 @@
 			
 			document.addEventListener('DOMContentLoaded', (event) => {
 				box.style.display = 'none';
+				btn.disabled = true;
 				func.ready();
 			});
 			
 			window.addEventListener('load', (event) => {
 				box.style.display = 'none';
-				func.loaded();
 				btn.disabled = true;
+				func.loaded();
 			});
 			
 			btn.addEventListener('click', (event) => {
@@ -219,7 +220,7 @@
 				// }
 			});
 			
-			btn.addEventListener('blur', (event) => {
+			window.addEventListener('blur', (event) => {
 				box.style.display = 'none';
 			});
 			// ======================================================
