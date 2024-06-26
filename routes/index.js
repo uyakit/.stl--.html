@@ -18,10 +18,15 @@ const multerStorage = multer.diskStorage({
 		cb(null, './app/PyVista/');
 	},
 	filename (req, file, cb) {
+		// https://github.com/expressjs/multer/issues/1104#issuecomment-1155334173
+		file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
 		cb(null, file.originalname);
 	}
 });
-const upload = multer({ storage: multerStorage });
+
+const upload = multer({
+	storage: multerStorage
+});
 
 //==================================================================
 function exec_stl2html(fname)
@@ -63,24 +68,30 @@ router.get("/", (req, res) => {
 // --------------------------------------
 router.post("/", upload.any(), (req, res) => {
 	
-	// console.log('originalname : ' + req.files[0].originalname);
-	// console.log('destination : ' + req.files[0].destination);
+	// sout
+	console.log('# originalname : ' + req.files[0].originalname);
+	// console.log('# destination : ' + req.files[0].destination);
 	let fname_html = req.files[0].originalname.split('.').slice(0, -1).join('.') + '.html';
 	console.log();
 	console.log('loaded : ');
 	console.log(req.files[0]);
 	console.log();
-	// console.log('output : ' + req.files[0].destination + fname_html);
 	
+	// ## OPERATION ##
 	exec_stl2html(req.files[0].originalname);
 	
-	// https://qiita.com/riversun/items/7f720ae472289a281e3d
-	res.set(
-		'Content-Disposition',
-		'attachment; filename=' + fname_html
-	);
+	// sout
+	console.log('# RETURN : ' + fname_html);
+	console.log();
 	
-	res.send(fs.readFileSync(req.files[0].destination + fname_html));
+	// https://qiita.com/watatakahashi/items/4b456971ae6dc3038569#%E6%96%B9%E6%B3%95%E3%81%9D%E3%81%AE2-header%E3%81%AB%E6%8C%87%E5%AE%9A
+	res.set({
+		'Content-Disposition': `attachment; filename=${encodeURIComponent(fname_html)}`
+	});
+	
+	res.status(200).send(
+		fs.readFileSync(req.files[0].destination + fname_html)
+	);
 	
 	// res.redirect('/');
 });
