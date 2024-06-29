@@ -100,7 +100,7 @@
 			</form>
 			<br>
 			<div id="sbmtRes" style="margin: auto; width:900px;">
-				<img id="imgRes" style="width:100px;" src="../app/PyVista/finishCall.png" onload="reloadImg(this, 1000)" onerror="reloadImg(this, 1000)" />
+				<img id="imgRes" style="width:100px;" src="../app/PyVista/finishCall.png" onload="reloadImg_onload(this, 1000)" onerror="reloadImg_onerror(this, 1000)" />
 			</div>
 			<br><br><br><br><br><br><br>
 			<%- include("./_share/footer.ejs") %>
@@ -123,7 +123,19 @@
 				}
 			}
 			// ------------------------------------------------------
-			function reloadImg(e,timer){ 
+			let flag_finishCall = 0;
+			
+			function reloadImg_onload(e, timer){
+				flag_finishCall = 1;
+				
+				setTimeout( () => {
+					e.src = "../app/PyVista/finishCall.png" + "?" + Date.now();
+				}, timer); 
+			}
+			
+			function reloadImg_onerror(e, timer){
+				flag_finishCall = 0;
+				
 				setTimeout( () => {
 					e.src = "../app/PyVista/finishCall.png" + "?" + Date.now();
 				}, timer); 
@@ -131,6 +143,7 @@
 			// ------------------------------------------------------
 			const sbmtRes = document.getElementById('sbmtRes');
 			const imgRes = document.getElementById('imgRes');
+			
 			funcClass.prototype = {
 				init: function () {
 				},
@@ -221,12 +234,9 @@
 			});
 			
 			btn.addEventListener('click', (e) => {
-				box.style.display = 'block';
-				
-				// if (status == 'working') {
-				// 	e.stopPropagation();
-				// 	e.preventDefault();
-				// }
+				setTimeout(() => {
+					box.style.display = 'block';
+				}, 100);
 			});
 			
 			imgRes.addEventListener('load', (e) => {

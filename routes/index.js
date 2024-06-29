@@ -58,13 +58,13 @@ function clearPngHtml(dir)
 	});
 }
 //==================================================================
-function clearPngStlHtml(dir)
+function clearStlHtml(dir)
 {
 	const arrDirFiles = fs.readdirSync(dir, { withFileTypes: true });
 	const arrFiles = arrDirFiles.filter(dirent => dirent.isFile()).map(({ name }) => name);
 	
 	arrFiles.forEach(fname => {
-		if (path.parse(fname).ext == ".png" || path.parse(fname).ext == ".stl" || path.parse(fname).ext == ".html") {
+		if (path.parse(fname).ext == ".stl" || path.parse(fname).ext == ".html") {
 			fs.unlink((dir + fname), (error) => {
 				if (error != null) {
 					console.log(error);
@@ -80,7 +80,8 @@ function clearPngStlHtml(dir)
 
 // --------------------------------------
 router.get("/", (req, res) => {
-	clearPngStlHtml("./app/PyVista/");
+	clearStlHtml("./app/PyVista/");
+	fs.copyFileSync("finishCall.png","./app/PyVista/finishCall.png")
 	res.render("./index.ejs");
 });
 // --------------------------------------
