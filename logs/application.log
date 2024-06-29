@@ -24,3 +24,6 @@ ValueError: Empty meshes cannot be plotted. Input mesh has zero points. To allow
 [2024-06-29T17:51:11.557] [INFO] application - Application listening at :3000
 [2024-06-29T17:52:30.493] [INFO] application - Application listening at :3000
 [2024-06-29T17:54:13.366] [INFO] application - Application listening at :3000
+[2024-06-29T18:06:13.565] [INFO] application - Application listening at :3000
+[2024-06-29T18:11:38.716] [ERROR] application - EPERM: operation not permitted, open 'C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\Lenna-WB.stl'
+[2024-06-29T18:11:52.049] [INFO] application - Application listening at :3000

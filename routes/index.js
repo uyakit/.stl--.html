@@ -12,7 +12,6 @@ const path = require("path");
 const fs = require('fs');
 const subproc = require('child_process');
 const multer  = require('multer');
-const { setTimeout } = require('timers/promises');
 
 const multerStorage = multer.diskStorage({
 	destination (req, file, cb) {
@@ -29,14 +28,6 @@ const upload = multer({
 	storage: multerStorage
 });
 
-//==================================================================
-const sleep = (time) => {
-  return new Promise((resolve, reject) => {
-      setTimeout(() => {
-          resolve()
-      }, time)
-  })
-}
 //==================================================================
 function exec_stl2html(fname)
 {
