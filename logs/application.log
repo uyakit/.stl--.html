@@ -1,1 +1,26 @@
-[2024-06-26T23:02:35.786] [INFO] application - Application listening at :3000
+[2024-06-29T17:13:04.417] [INFO] application - Application listening at :3000
+[2024-06-29T17:14:50.545] [INFO] application - Application listening at :3000
+[2024-06-29T17:15:59.453] [INFO] application - Application listening at :3000
+[2024-06-29T17:19:18.063] [INFO] application - Application listening at :3000
+[2024-06-29T17:29:47.030] [INFO] application - Application listening at :3000
+[2024-06-29T17:30:45.826] [ERROR] application - Command failed: C:/home/python3111x64/python.exe  ./app/PyVista/stl2html@WebApps.py  "./Lenna-WB.stl"
+ERROR:root:File C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\Lenna-WB.stl not found
+ERROR:root:Algorithm vtkSTLReader (000001DCBB066B90) returned failure for request: vtkInformation (000001DCBAFEF250)
+C:\home\python3111x64\Lib\site-packages\pyvista\core\utilities\fileio.py:203: UserWarning: The VTK reader `vtkSTLReader` in pyvista reader `STLReader('C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\Lenna-WB.stl')` raised an errorwhile reading the file.
+	"Algorithm vtkSTLReader (000001DCBB066B90) returned failure for request: vtkInformation (000001DCBAFEF250)"
+  warnings.warn(
+Traceback (most recent call last):
+  File "C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\stl2html@WebApps.py", line 233, in <module>
+    main()
+  File "C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\stl2html@WebApps.py", line 83, in main
+    pl.add_mesh(
+  File "C:\home\python3111x64\Lib\site-packages\pyvista\plotting\plotter.py", line 3515, in add_mesh
+    raise ValueError(
+ValueError: Empty meshes cannot be plotted. Input mesh has zero points. To allow plotting empty meshes, set `pv.global_theme.allow_empty_mesh = True`
+
+[2024-06-29T17:32:19.447] [INFO] application - Application listening at :3000
+[2024-06-29T17:42:12.503] [INFO] application - Application listening at :3000
+[2024-06-29T17:42:54.932] [ERROR] application - The "callback" argument must be of type function. Received type number (3000)
+[2024-06-29T17:51:11.557] [INFO] application - Application listening at :3000
+[2024-06-29T17:52:30.493] [INFO] application - Application listening at :3000
+[2024-06-29T17:54:13.366] [INFO] application - Application listening at :3000

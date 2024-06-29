@@ -59,7 +59,7 @@
 	<body>
 		<div class="outerframe">
 			<%- include("./_share/navbar.ejs") %>
-			<form action="/" method="POST" enctype="multipart/form-data">
+			<form method="POST" action="/" enctype="multipart/form-data">
 				<main role="main" class="container d-flex justify-content-md-center">
 					<div class="align-self-center col-md-8">
 						<div style="text-align:center" width="100%">
@@ -86,6 +86,7 @@
 									</div>
 								</div>
 							</div>
+							<br>
 							<div id="upPrev" style="text-align:right; color:rgba(21, 153, 191, 0.8); font-weight:bold">
 								<p id="file_prop"></p>
 							</div>
@@ -97,6 +98,11 @@
 					</div>
 				</main>
 			</form>
+			<br>
+			<div id="sbmtRes" style="margin: auto; width:900px;">
+				<img id="imgRes" style="width:100px;" src="../app/PyVista/finishCall.png" onload="reloadImg(this, 1000)" onerror="reloadImg(this, 5000)" />
+			</div>
+			<br><br><br><br><br><br><br>
 			<%- include("./_share/footer.ejs") %>
 		</div>
 		
@@ -117,6 +123,14 @@
 				}
 			}
 			// ------------------------------------------------------
+			function reloadImg(e,timer){ 
+				setTimeout( () => {
+					e.src = "../app/PyVista/finishCall.png" + "?" + Date.now();
+				}, timer); 
+			}
+			// ------------------------------------------------------
+			const sbmtRes = document.getElementById('sbmtRes');
+			const imgRes = document.getElementById('imgRes');
 			funcClass.prototype = {
 				init: function () {
 				},
@@ -128,19 +142,19 @@
 				setDragFile: function(){
 					// -------------------------
 					// ドラッグオーバー時
-					document.getElementById('dropArea').addEventListener('dragover', function(e){
+					document.getElementById('dropArea').addEventListener('dragover', (e) => {
 						e.preventDefault();
 						document.getElementById('dropArea').classList.add('dragover');
 					});
 					// -------------------------
 					// ドラッグアウト時
-					document.getElementById('dropArea').addEventListener('dragleave', function(e){
+					document.getElementById('dropArea').addEventListener('dragleave', (e) => {
 						e.preventDefault();
 						document.getElementById('dropArea').classList.remove('dragover');
 					});
 					// -------------------------
 					// ドロップ時
-					document.getElementById('dropArea').addEventListener('drop', function(e){
+					document.getElementById('dropArea').addEventListener('drop', (e) => {
 						e.preventDefault();
 						document.getElementById('dropArea').classList.remove('dragover');
 						
@@ -159,7 +173,7 @@
 					// -------------------------
 					// input[type=file]に変更があれば実行
 					// #ドロップ以外でも発火
-					document.getElementById('uploadFile').addEventListener('change', function(e){
+					document.getElementById('uploadFile').addEventListener('change', (e) => {
 						let file = e.target.files[0];
 						
 						if(typeof e.target.files[0] !== 'undefined') {
@@ -199,28 +213,23 @@
 			const btn = document.getElementById('btnSubmit');
 			const box = document.getElementById('spinnerWrap');
 			
-			document.addEventListener('DOMContentLoaded', (event) => {
+			document.addEventListener('DOMContentLoaded', (e) => {
 				box.style.display = 'none';
+				sbmtRes.style.display = 'none';
 				btn.disabled = true;
 				func.ready();
 			});
 			
-			window.addEventListener('load', (event) => {
-				box.style.display = 'none';
-				btn.disabled = true;
-				func.loaded();
-			});
-			
-			btn.addEventListener('click', (event) => {
+			btn.addEventListener('click', (e) => {
 				box.style.display = 'block';
 				
 				// if (status == 'working') {
-				// 	event.stopPropagation();
-				// 	event.preventDefault();
+				// 	e.stopPropagation();
+				// 	e.preventDefault();
 				// }
 			});
 			
-			window.addEventListener('blur', (event) => {
+			imgRes.addEventListener('load', (e) => {
 				box.style.display = 'none';
 			});
 			// ======================================================

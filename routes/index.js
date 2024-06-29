@@ -12,6 +12,7 @@ const path = require("path");
 const fs = require('fs');
 const subproc = require('child_process');
 const multer  = require('multer');
+const { setTimeout } = require('timers/promises');
 
 const multerStorage = multer.diskStorage({
 	destination (req, file, cb) {
@@ -29,6 +30,14 @@ const upload = multer({
 });
 
 //==================================================================
+const sleep = (time) => {
+  return new Promise((resolve, reject) => {
+      setTimeout(() => {
+          resolve()
+      }, time)
+  })
+}
+//==================================================================
 function exec_stl2html(fname)
 {
 	// ------------------------------------------------------
@@ -40,13 +49,31 @@ function exec_stl2html(fname)
 	// ------------------------------------------------------
 }
 //==================================================================
-function clearStlHtml(dir)
+function clearPngHtml(dir)
 {
 	const arrDirFiles = fs.readdirSync(dir, { withFileTypes: true });
 	const arrFiles = arrDirFiles.filter(dirent => dirent.isFile()).map(({ name }) => name);
 	
 	arrFiles.forEach(fname => {
-		if (path.parse(fname).ext == ".stl" || path.parse(fname).ext == ".html") {
+		if (path.parse(fname).ext == ".png" || path.parse(fname).ext == ".html") {
+			fs.unlink((dir + fname), (error) => {
+				if (error != null) {
+					console.log(error);
+				} else {
+					console.log((dir + fname) + " : deleted");
+				}
+			});
+		}
+	});
+}
+//==================================================================
+function clearPngStlHtml(dir)
+{
+	const arrDirFiles = fs.readdirSync(dir, { withFileTypes: true });
+	const arrFiles = arrDirFiles.filter(dirent => dirent.isFile()).map(({ name }) => name);
+	
+	arrFiles.forEach(fname => {
+		if (path.parse(fname).ext == ".png" || path.parse(fname).ext == ".stl" || path.parse(fname).ext == ".html") {
 			fs.unlink((dir + fname), (error) => {
 				if (error != null) {
 					console.log(error);
@@ -62,11 +89,12 @@ function clearStlHtml(dir)
 
 // --------------------------------------
 router.get("/", (req, res) => {
-	clearStlHtml("./app/PyVista/");
+	clearPngStlHtml("./app/PyVista/");
 	res.render("./index.ejs");
 });
 // --------------------------------------
 router.post("/", upload.any(), (req, res) => {
+	clearPngHtml("./app/PyVista/");
 	
 	// sout
 	console.log('# originalname : ' + req.files[0].originalname);
@@ -88,6 +116,8 @@ router.post("/", upload.any(), (req, res) => {
 	res.set({
 		'Content-Disposition': `attachment; filename=${encodeURIComponent(fname_html)}`
 	});
+	
+	fs.copyFileSync("finishCall.png","./app/PyVista/finishCall.png")
 	
 	res.status(200).send(
 		fs.readFileSync(req.files[0].destination + fname_html)
