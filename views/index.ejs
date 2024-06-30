@@ -99,8 +99,8 @@
 				</main>
 			</form>
 			<br>
-			<div id="sbmtRes" style="display:none; margin:auto; width:900px;">
-				<img id="imgRes" style="width:100px;" src="../app/PyVista/blockSpinner.png" onload="reloadImg_onload(this, 1000)" onerror="reloadImg_onerror(this, 1000)" />
+			<div id="watchRes" style="display:none; margin:auto; width:900px;">
+				<img id="blockSpinner" style="width:100px;" src="../app/PyVista/blockSpinner.png" onload="reloadImg_onload(this, 1000)" onerror="reloadImg_onerror(this, 1000)" />
 			</div>
 			<br><br><br><br><br><br><br>
 			<%- include("./_share/footer.ejs") %>
@@ -124,18 +124,19 @@
 				}
 			}
 			// ------------------------------------------------------
-			function reloadImg_onload(e, timer){
+			function reloadImg(e, timer) {
 				setTimeout( () => {
 					e.src = "../app/PyVista/blockSpinner.png" + "?" + Date.now();
 				}, timer);
-				
+			}
+			
+			function reloadImg_onload(e, timer){
+				reloadImg(e, timer);
 				box.style.display = 'none';
 			}
 			
 			function reloadImg_onerror(e, timer){
-				setTimeout( () => {
-					e.src = "../app/PyVista/blockSpinner.png" + "?" + Date.now();
-				}, timer);
+				reloadImg(e, timer);
 			}
 			// ------------------------------------------------------
 			funcClass.prototype = {
