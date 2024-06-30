@@ -81,7 +81,7 @@ function clearStlHtml(dir)
 // --------------------------------------
 router.get("/", (req, res) => {
 	clearStlHtml("./app/PyVista/");
-	fs.copyFileSync("finishCall.png","./app/PyVista/finishCall.png")
+	fs.copyFileSync("blockSpinner.png","./app/PyVista/blockSpinner.png")
 	res.render("./index.ejs");
 });
 // --------------------------------------
@@ -109,7 +109,7 @@ router.post("/", upload.any(), (req, res) => {
 		'Content-Disposition': `attachment; filename=${encodeURIComponent(fname_html)}`
 	});
 	
-	fs.copyFileSync("finishCall.png","./app/PyVista/finishCall.png")
+	fs.copyFileSync("blockSpinner.png","./app/PyVista/blockSpinner.png")
 	
 	res.status(200).send(
 		fs.readFileSync(req.files[0].destination + fname_html)
