@@ -14,3 +14,10 @@
 [2024-06-30T13:49:32.285] [INFO] application - Application listening at :3000
 [2024-06-30T14:11:00.411] [INFO] application - Application listening at :3000
 [2024-06-30T14:29:10.989] [INFO] application - Application listening at :3000
+[2024-06-30T22:56:20.486] [INFO] application - Application listening at :3000
+[2024-06-30T22:59:19.239] [ERROR] application - EPERM: operation not permitted, open 'C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\Lenna-WB.stl'
+[2024-06-30T22:59:34.866] [ERROR] application - EPERM: operation not permitted, open 'C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\Lenna-WB.stl'
+[2024-06-30T22:59:45.673] [ERROR] application - EPERM: operation not permitted, open 'C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\Lenna-WB.stl'
+[2024-06-30T23:00:09.057] [ERROR] application - EPERM: operation not permitted, open 'C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\Lenna-WB.stl'
+[2024-06-30T23:01:01.049] [INFO] application - Application listening at :3000
+[2024-06-30T23:03:44.775] [INFO] application - Application listening at :3000

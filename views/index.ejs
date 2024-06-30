@@ -67,7 +67,7 @@
 						</div>
 						<br>
 						<div style="text-align:right;">
-							<a href="./public/MarbleBust.stl" target="_blank" style="color:rgba(21, 153, 191, 0.8);"># <u>Sample .stl to test</u>&nbsp;[3.4 MB]</a>
+							<a href="./public/MarbleBust.stl" download="MarbleBust.stl" target="_blank" style="color:rgba(21, 153, 191, 0.8);"># <u>Sample .stl to test</u>&nbsp;[3.4 MB]</a>
 						</div>
 						<div id="upFileWrap">
 							<div id="upFileWrap_noPrev">
@@ -144,7 +144,6 @@
 				setTimeout( () => {
 					elem.src = "../app/PyVista/blockSpinner.png" + "?" + dateNow();
 				}, span);
-				
 			}
 			
 			function reloadImg_onload(elem, span){
@@ -249,13 +248,13 @@
 				}, 100);
 			});
 			
-			<!-- imb.addEventListener('load', (e) => { -->
-				<!-- box.style.display = 'none'; -->
-			<!-- }); -->
+			imb.addEventListener('load', (e) => {
+				box.style.display = 'none';
+			});
 			
-			<!-- imb.addEventListener('error', (e) => { -->
-				<!-- box.style.display = 'block'; -->
-			<!-- }); -->
+			imb.addEventListener('error', (e) => {
+				box.style.display = 'block';
+			});
 			// ======================================================
 			//Hamburger menu
 			const mobileMenu = document.getElementById("mobile-menu");

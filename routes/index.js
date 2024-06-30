@@ -104,12 +104,12 @@ router.post("/", upload.any(), (req, res) => {
 	console.log('# RETURN : ' + fname_html);
 	console.log();
 	
+	fs.copyFileSync("blockSpinner.png","./app/PyVista/blockSpinner.png")
+	
 	// https://qiita.com/watatakahashi/items/4b456971ae6dc3038569#%E6%96%B9%E6%B3%95%E3%81%9D%E3%81%AE2-header%E3%81%AB%E6%8C%87%E5%AE%9A
 	res.set({
 		'Content-Disposition': `attachment; filename=${encodeURIComponent(fname_html)}`
 	});
-	
-	fs.copyFileSync("blockSpinner.png","./app/PyVista/blockSpinner.png")
 	
 	res.status(200).send(
 		fs.readFileSync(req.files[0].destination + fname_html)
