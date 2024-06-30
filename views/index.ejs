@@ -100,7 +100,7 @@
 			</form>
 			<br>
 			<div id="watchRes" style="display:none; margin:auto; width:900px;">
-				<img id="blockSpinner" style="width:100px;" src="../app/PyVista/blockSpinner.png" onload="reloadImg_onload(this, 1000)" onerror="reloadImg_onerror(this, 1000)" />
+				<img id="blockSpinner" style="width:100px;" src="../app/PyVista/blockSpinner.png?@php echo uniqid(); @endphp" onload="reloadImg_onload(this, 1000)" onerror="reloadImg_onerror(this, 1000)" />
 			</div>
 			<br><br><br><br><br><br><br>
 			<%- include("./_share/footer.ejs") %>
@@ -117,6 +117,7 @@
 			let func;
 			const btn = document.getElementById('btnSubmit');
 			const box = document.getElementById('spinnerWrap');
+			const imb = document.getElementById('blockSpinner');
 			// ------------------------------------------------------
 			if(typeof funcClass === 'undefined') {
 				var funcClass = function(){
@@ -124,19 +125,35 @@
 				}
 			}
 			// ------------------------------------------------------
-			function reloadImg(e, timer) {
+			function dateNow() {
+				// https://www.tohoho-web.com/js/date.htm#getset
+				let date = new Date();
+				
+				return (
+					date.getFullYear()
+					+ ('0' + (date.getMonth() + 1)).slice(-2)
+					+ ('0' + date.getDate()).slice(-2)
+					+ ('0' + date.getHours()).slice(-2)
+					+ ('0' + date.getMinutes()).slice(-2)
+					+ ('0' + date.getSeconds()).slice(-2)
+					+ date.getMilliseconds()
+				);
+			}
+			// ------------------------------------------------------
+			function reloadImg(elem, span) {
 				setTimeout( () => {
-					e.src = "../app/PyVista/blockSpinner.png" + "?" + Date.now();
-				}, timer);
+					elem.src = "../app/PyVista/blockSpinner.png" + "?" + dateNow();
+				}, span);
+				
 			}
 			
-			function reloadImg_onload(e, timer){
-				reloadImg(e, timer);
+			function reloadImg_onload(elem, span){
+				reloadImg(elem, span);
 				box.style.display = 'none';
 			}
 			
-			function reloadImg_onerror(e, timer){
-				reloadImg(e, timer);
+			function reloadImg_onerror(elem, span){
+				reloadImg(elem, span);
 				box.style.display = 'block';
 			}
 			// ------------------------------------------------------
@@ -231,6 +248,14 @@
 					box.style.display = 'block';
 				}, 100);
 			});
+			
+			<!-- imb.addEventListener('load', (e) => { -->
+				<!-- box.style.display = 'none'; -->
+			<!-- }); -->
+			
+			<!-- imb.addEventListener('error', (e) => { -->
+				<!-- box.style.display = 'block'; -->
+			<!-- }); -->
 			// ======================================================
 			//Hamburger menu
 			const mobileMenu = document.getElementById("mobile-menu");
