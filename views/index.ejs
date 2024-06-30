@@ -99,7 +99,7 @@
 				</main>
 			</form>
 			<br>
-			<div id="sbmtRes" style="margin: auto; width:900px;">
+			<div id="sbmtRes" style="display:none; margin:auto; width:900px;">
 				<img id="imgRes" style="width:100px;" src="../app/PyVista/blockSpinner.png" onload="reloadImg_onload(this, 1000)" onerror="reloadImg_onerror(this, 1000)" />
 			</div>
 			<br><br><br><br><br><br><br>
@@ -138,9 +138,6 @@
 				}, timer);
 			}
 			// ------------------------------------------------------
-			const sbmtRes = document.getElementById('sbmtRes');
-			const imgRes = document.getElementById('imgRes');
-			
 			funcClass.prototype = {
 				init: function () {
 				},
@@ -223,7 +220,6 @@
 			
 			document.addEventListener('DOMContentLoaded', (e) => {
 				box.style.display = 'none';
-				sbmtRes.style.display = 'none';
 				btn.disabled = true;
 				func.ready();
 			});
