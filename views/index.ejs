@@ -99,8 +99,11 @@
 				</main>
 			</form>
 			<br>
+			<div id="sbmtRes" style="margin: auto; width:900px;">
+				<img id="imgRes_Mesh" style="width:900px;" src="../app/PyVista/stl2html_Mesh.png" onload="reloadImg_Mesh(this, 1000)" onerror="reloadImg_Mesh(this, 5000)" />
+			</div>
 			<div id="watchRes" style="display:none; margin:auto; width:900px;">
-				<img id="blockSpinner" style="width:100px;" src="../app/PyVista/blockSpinner.png?@php echo uniqid(); @endphp" onload="reloadImg_onload(this, 1000)" onerror="reloadImg_onerror(this, 1000)" />
+				<img id="blockSpinner" style="width:100px;" src="../app/PyVista/blockSpinner.png?@php echo uniqid(); @endphp" onload="hideSpinner(this, 1000);" onerror="reloadImg(this, 1000)" />
 			</div>
 			<br><br><br><br><br><br><br>
 			<%- include("./_share/footer.ejs") %>
@@ -140,22 +143,32 @@
 				);
 			}
 			// ------------------------------------------------------
-			function reloadImg(elem, span) {
+			function hideSpinner(elem, span){
+				box.style.display = 'none';
+				
 				setTimeout( () => {
 					elem.src = "../app/PyVista/blockSpinner.png" + "?" + dateNow();
 				}, span);
 			}
 			
-			function reloadImg_onload(elem, span){
-				reloadImg(elem, span);
-				box.style.display = 'none';
-			}
-			
-			function reloadImg_onerror(elem, span){
-				reloadImg(elem, span);
+			function reloadImg(elem, span){
 				box.style.display = 'block';
+				
+				setTimeout( () => {
+					elem.src = "../app/PyVista/blockSpinner.png" + "?" + dateNow();
+				}, span);
+				
 			}
 			// ------------------------------------------------------
+			function reloadImg_Mesh(elem, span){
+				setTimeout( () => {
+					elem.src = "../app/PyVista/stl2html_Mesh.png" + "?" + dateNow();
+				}, span);
+			}
+			// ------------------------------------------------------
+			const sbmtRes = document.getElementById('sbmtRes');
+			const imgRes_Mesh = document.getElementById('imgRes_Mesh');
+			
 			funcClass.prototype = {
 				init: function () {
 				},
@@ -238,6 +251,7 @@
 			
 			document.addEventListener('DOMContentLoaded', (e) => {
 				box.style.display = 'none';
+				sbmtRes.style.display = 'none';
 				btn.disabled = true;
 				func.ready();
 			});
@@ -246,14 +260,8 @@
 				setTimeout(() => {
 					box.style.display = 'block';
 				}, 100);
-			});
-			
-			imb.addEventListener('load', (e) => {
-				box.style.display = 'none';
-			});
-			
-			imb.addEventListener('error', (e) => {
-				box.style.display = 'block';
+				
+				sbmtRes.style.display = 'block';
 			});
 			// ======================================================
 			//Hamburger menu
