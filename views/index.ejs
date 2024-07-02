@@ -100,10 +100,10 @@
 			</form>
 			<br>
 			<div id="sbmtRes" style="margin: auto; width:900px;">
-				<img id="imgRes_Mesh" style="width:900px;" src="../app/PyVista/stl2html_Mesh.png" onload="reloadImg_Mesh(this, 1000)" onerror="reloadImg_Mesh(this, 5000)" />
+				<img id="imgRes_Mesh" style="width:900px;" src="../app/PyVista/stl2html_Mesh.png?@php echo uniqid(); @endphp" onload="hideSpinner_Mesh(this, 1000)" onerror="reloadImg_Mesh(this, 5000)" />
 			</div>
 			<div id="watchRes" style="display:none; margin:auto; width:900px;">
-				<img id="blockSpinner" style="width:100px;" src="../app/PyVista/blockSpinner.png?@php echo uniqid(); @endphp" onload="hideSpinner(this, 1000);" onerror="reloadImg(this, 1000)" />
+				<img id="blockSpinner" style="width:100px;" src="../app/PyVista/blockSpinner.png?@php echo uniqid(); @endphp" onload="hideSpinner(this, 1000);" onerror="reloadImg(this, 5000)" />
 			</div>
 			<br><br><br><br><br><br><br>
 			<%- include("./_share/footer.ejs") %>
@@ -160,7 +160,17 @@
 				
 			}
 			// ------------------------------------------------------
+			function hideSpinner_Mesh(elem, span){
+				box.style.display = 'none';
+				
+				setTimeout( () => {
+					elem.src = "../app/PyVista/stl2html_Mesh.png" + "?" + dateNow();
+				}, span);
+			}
+			
 			function reloadImg_Mesh(elem, span){
+				box.style.display = 'block';
+				
 				setTimeout( () => {
 					elem.src = "../app/PyVista/stl2html_Mesh.png" + "?" + dateNow();
 				}, span);
@@ -257,10 +267,7 @@
 			});
 			
 			btn.addEventListener('click', (e) => {
-				setTimeout(() => {
-					box.style.display = 'block';
-				}, 100);
-				
+				box.style.display = 'block';
 				sbmtRes.style.display = 'block';
 			});
 			// ======================================================

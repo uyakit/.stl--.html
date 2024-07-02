@@ -29,16 +29,26 @@ const upload = multer({
 });
 
 //==================================================================
+function copyf(path_from, path_to)
+{
+	fs.copyFileSync(path_from, path_to)
+	
+	const dnow = new Date();
+	fs.utimes(path_to, dnow, dnow, e => {
+		if (e) console.log( e.message );
+	});
+}
+//==================================================================
 function exec_stl2html(fname)
 {
 	// ------------------------------------------------------
 	// .stl -> .html
 	//
 	// https://t-salad.com/node-exe/
-	// subproc.execSync('py ./app/PyVista/stl2html@WebApps.py  ./stl2html.stl');
-	subproc.execSync('C:/home/python3111x64/python.exe  ./app/PyVista/stl2html@WebApps.py  "./' + fname + '"');
+	// subproc.execSync('py ./app/PyVista/stl2html.py  ./stl2html.stl');
+	subproc.execSync('C:/home/python3111x64/python.exe  ./app/PyVista/stl2html.py  "./' + fname + '"');
 	subproc.execSync('C:/home/python3111x64/python.exe  ./app/PyVista/stl2png.py  ./' + path.parse(fname).name + '.stl');
-	fs.copyFileSync('./app/PyVista/' + path.parse(fname).name + '.stl.png', './app/PyVista/stl2html_Mesh.png');
+	copyf('./app/PyVista/' + path.parse(fname).name + '.stl.png', './app/PyVista/stl2html_Mesh.png');
 	// ------------------------------------------------------
 }
 //==================================================================
@@ -60,13 +70,13 @@ function clearPngHtml(dir)
 	});
 }
 //==================================================================
-function clearStlHtml(dir)
+function clearPngStlHtml(dir)
 {
 	const arrDirFiles = fs.readdirSync(dir, { withFileTypes: true });
 	const arrFiles = arrDirFiles.filter(dirent => dirent.isFile()).map(({ name }) => name);
 	
 	arrFiles.forEach(fname => {
-		if (path.parse(fname).ext == ".stl" || path.parse(fname).ext == ".html") {
+		if (path.parse(fname).ext == ".png" || path.parse(fname).ext == ".stl" || path.parse(fname).ext == ".html") {
 			fs.unlink((dir + fname), (error) => {
 				if (error != null) {
 					console.log(error);
@@ -82,9 +92,9 @@ function clearStlHtml(dir)
 
 // --------------------------------------
 router.get("/", (req, res) => {
-	clearStlHtml("./app/PyVista/");
-	fs.copyFileSync("blockSpinner.png","./app/PyVista/blockSpinner.png");
-	fs.copyFileSync("stl2html_Mesh.png","./app/PyVista/stl2html_Mesh.png");
+	clearPngStlHtml("./app/PyVista/");
+	copyf("blockSpinner.png","./app/PyVista/blockSpinner.png");
+	copyf("stl2html_Mesh.png","./app/PyVista/stl2html_Mesh.png");
 	res.render("./index.ejs");
 });
 // --------------------------------------
@@ -107,10 +117,10 @@ router.post("/", upload.any(), (req, res) => {
 	console.log('# RETURN : ' + fname_html);
 	console.log();
 	
-	fs.copyFileSync("blockSpinner.png","./app/PyVista/blockSpinner.png");
+	copyf("blockSpinner.png","./app/PyVista/blockSpinner.png");
 	
 	if (fs.existsSync("./app/PyVista/stl2html_Mesh.png") == false) {
-		fs.copyFileSync("stl2html_Mesh.png","./app/PyVista/stl2html_Mesh.png");
+		copyf("stl2html_Mesh.png","./app/PyVista/stl2html_Mesh.png");
 	}
 	
 	// https://qiita.com/watatakahashi/items/4b456971ae6dc3038569#%E6%96%B9%E6%B3%95%E3%81%9D%E3%81%AE2-header%E3%81%AB%E6%8C%87%E5%AE%9A
