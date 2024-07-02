@@ -15,6 +15,7 @@ C:\home\python3111x64\python.exe -m pip install --extra-index-url https://wheels
 C:\home\python3111x64\python.exe -m pip install vtk
 C:\home\python3111x64\python.exe -m pip install tkinter
 C:\home\python3111x64\python.exe -m pip install matplotlib
+C:\home\python3111x64\python.exe -m pip install numpy
 C:\home\python3111x64\python.exe -m pip install numpy-stl
 
 C:\home\python3111x64\python.exe -m pip list

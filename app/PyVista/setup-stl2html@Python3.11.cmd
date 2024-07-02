@@ -9,6 +9,7 @@ py -m pip uninstall vtk -y
 py -m pip install --extra-index-url https://wheels.vtk.org vtk-osmesa
 py -m pip install vtk
 py -m pip install matplotlib
+py -m pip install numpy
 py -m pip install numpy-stl
 
 py -m pip list
