@@ -90,6 +90,8 @@
 							</div>
 							<br>
 							<div id="upPrev" style="text-align:right; color:rgba(21, 153, 191, 0.8); font-weight:bold">
+								<br>
+								<div id="canvas" style="width:400px; height:300px; margin-left:auto;"></div>
 								<p id="file_prop"></p>
 							</div>
 						</div>
@@ -101,7 +103,7 @@
 				</main>
 			</form>
 			<br>
-			<div id="sbmtRes" style="margin: auto; width:900px;">
+			<div id="sbmtRes" style="margin:auto; width:900px;">
 				<img id="imgRes_Mesh" style="width:900px;" src="../app/PyVista/stl2html_Mesh.png?<?php echo (new DateTime())->format('YmdHisu'); ?>" onload="hideSpinner_Mesh(this, 1000)" onerror="reloadImg_Mesh(this, 1000)" />
 			</div>
 			<div id="watchRes" style="margin:auto; width:900px;">
@@ -118,12 +120,15 @@
 		</div>
 		
 		<script>
+			"use strict";
+			////////////////////////////////////////////////////////////////////////////////////
 			<!-- https://kuwk.jp/blog/dd/ -->
 			let func;
 			const btn = document.getElementById('btnSubmit');
 			const box = document.getElementById('spinnerWrap');
 			const dvb = document.getElementById('watchRes');
 			const imb = document.getElementById('blockSpinner');
+			const canvas = document.getElementById('canvas');
 			// ------------------------------------------------------
 			if(typeof funcClass === 'undefined') {
 				var funcClass = function(){
@@ -183,14 +188,14 @@
 			const imgRes_Mesh = document.getElementById('imgRes_Mesh');
 			
 			funcClass.prototype = {
-				init: function () {
+				init: () => {
 				},
-				ready: function() {
+				ready: () => {
 					func.setDragFile();
 				},
-				loaded: function() {
+				loaded: () => {
 				},
-				setDragFile: function(){
+				setDragFile: () => {
 					// -------------------------
 					// ドラッグオーバー時
 					document.getElementById('dropArea').addEventListener('dragover', (e) => {
@@ -235,7 +240,7 @@
 					}, false);
 					// -------------------------
 				},
-				setFile: function(file){
+				setFile: (file) => {
 					let ext = file.name.split(".").pop();
 					if(ext == 'stl') {
 						if(file.size < (20 * Math.pow(1024, 2))) {
@@ -245,6 +250,11 @@
 							document.getElementById('file_prop').innerText = file.name + '\n( ' + Math.ceil((file.size)/1024).toLocaleString() + ' KB)';
 							
 							document.getElementById("btnSubmit").disabled = false;
+							
+							// Show .stl model in the Canvas
+							canvas.style.wiidth = '400px';
+							canvas.style.height = '300px';
+							openStl(file);
 						} else {
 							alert(".stl available just under '20MB' !");
 						}
@@ -252,16 +262,34 @@
 						alert('Just .stl available !');
 					}
 				},
-				removeFile: function(){
+				removeFile: () => {
 					<!-- let _upFileWrap = document.getElementById('upFileWrap'); -->
 					<!-- _upFileWrap.className = ''; -->
 					<!-- let _name = document.getElementById('file_prop'); -->
 					<!-- _name.innerText = 'File Name = (#unspecified)'; -->
 				}
 			};
-			// ------------------------------------------------------
-			func = new funcClass();
+			// ======================================================
+			func = new funcClass();	
 			
+			let scene;
+			let camera;
+			let renderer;
+			let controls;
+			
+			let fov;
+			let caspect;
+			let near;
+			let far;
+			
+			let ambient;
+			let spotLight;
+			let lightHelper;
+			let axisHelper;
+			
+			let mshSTL;
+			let matSTL;
+			////////////////////////////////////////////////////////////////////////////////////
 			document.addEventListener('DOMContentLoaded', (e) => {
 				box.style.display = 'none';
 				dvb.style.display = 'none';
@@ -269,7 +297,102 @@
 				
 				btn.disabled = true;
 				func.ready();
-			});
+				//----------------------------------------------------------
+				//# STL view
+				
+				/* ①レンダリングオブジェクトの初期化 */
+				
+				renderer = new THREE.WebGLRenderer({"antialias" : true});
+				renderer.setSize(canvas.clientWidth, canvas.clientHeight); // レンダラーのサイズをdivのサイズに設定
+				const bcol = new THREE.Color("rgb(33, 13, 51)");
+				renderer.setClearColor(bcol, 1.0); // レンダラーの背景色を黒色（不透過）に設定
+				canvas.appendChild(renderer.domElement); // div領域にレンダラーを配置
+				
+				renderer.shadowMap.enabled = true;
+				renderer.shadowMap.type = THREE.PCFSoftShadowMap; // 影の境目（隣り合う影との間を線形補間）
+				
+				renderer.gammaInput = true; //白とび抑止, 暗すぎるところを明るく
+				renderer.gammaOutput = true;
+				//----------------------------------------------------------
+				/* ②シーンの生成 */
+				scene = new THREE.Scene();
+				//----------------------------------------------------------
+				/* ③カメラの生成 */
+				fov = 75; // 視野角：0～90
+				caspect = canvas.clientWidth / canvas.clientHeight; // 縦横比
+				near = 0.001; // 視体積手前までの距離
+				far = 1000; // 視体積奥までの距離
+				
+				camera = new THREE.PerspectiveCamera(fov, caspect, near, far); // カメラの生成
+				let camera_dist = 3.0;
+				camera.position.set(0.05 * camera_dist, -0.3 * camera_dist, 0.15 * camera_dist); // カメラ位置の設定
+				camera.up.set(0, 0, 1); // カメラの上方向ベクトルの設定
+				camera.lookAt({
+					x : 0,
+					y : 0,
+					z : 100
+				});
+				//----------------------------------------------------------
+				ambient = new THREE.AmbientLight( 0xffffff, 0.35 ); //環境光 https://www56.atwiki.jp/threejs/pages/82.html
+				spotLight = new THREE.SpotLight( 0xffffff, 1 );
+				
+				lightHelper = new THREE.SpotLightHelper( spotLight );
+				axisHelper = new THREE.AxisHelper( 1 );
+				//----------------------------------------------------------
+				spotLight.position.set( 1, -3, 3 );
+				spotLight.castShadow = true;
+				
+				spotLight.intensity = 1;
+				spotLight.distance = 8;
+				spotLight.angle = 1.5;
+				spotLight.shadow.camera.fov = THREE.Math.radToDeg( 2 * spotLight.angle ); //影を発生させる角度
+				spotLight.penumbra = 0.1;
+				spotLight.decay = 1;
+				
+				spotLight.shadow.camera.near = 50; //影の最短距離
+				spotLight.shadow.camera.far = 5000; //影の最長距離
+				spotLight.shadow.mapSize.width = 512; //影の細かさ
+				spotLight.shadow.mapSize.height = 512; //影の細かさ
+				
+				spotLight.shadow.camera.near = 0.0001; //:影の最短距離
+				spotLight.shadow.camera.far = 100; //影の最長距離
+				//----------------------------------------------------------
+				let geoFloor = new THREE.BoxGeometry( 5.000, 5.000, 0.2 );
+				let matFloor= new THREE.MeshStandardMaterial({
+					side: THREE.DoubleSide,
+					color: 0x808080,
+					roughness: 0,
+					metalness: 0.4});
+				let mshFloor = new THREE.Mesh( geoFloor, matFloor );
+				mshFloor.receiveShadow = true;
+				mshFloor.position.set( 0, 0, -0.5 );
+				
+				matSTL= new THREE.MeshStandardMaterial({
+					side: THREE.DoubleSide,
+					color: 0xFFC355,
+					roughness: 0,
+					metalness: 0.4});
+				//----------------------------------------------------------
+				scene.add( camera );
+				scene.add( ambient );
+				scene.add( spotLight );
+				scene.add( axisHelper );
+				<!-- scene.add( mshFloor ); -->
+				<!-- scene.add( new THREE.HemisphereLight( 0x443333, 0x222233, 4 ) ); -->
+				<!-- scene.add( lightHelper ); -->
+				//----------------------------------------------------------
+				// マウス操作関連
+				controls =  new THREE.OrbitControls( camera, renderer.domElement );
+				controls.addEventListener( 'change', Redraw );
+				controls.minDistance = 0.010;
+				controls.maxDistance = 100.000;
+				controls.maxPolarAngle = Math.PI * 2;
+				controls.enablePan = false;
+				controls.update();
+				
+				Redraw()
+				//----------------------------------------------------------
+			}, false);
 			
 			btn.addEventListener('click', (e) => {
 				setTimeout( () => {
@@ -277,7 +400,178 @@
 					dvb.style.display = 'block';
 					imb.style.display = 'block';
 				}, 300);
-			});
+			}, false);
+			// ======================================================
+			// 再描画
+			function Redraw(){
+				renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+				caspect = canvas.clientWidth / canvas.clientHeight; // 縦横比
+				camera.aspect = caspect;
+				camera.updateProjectionMatrix();
+				
+				lightHelper.update(); // required
+				window.requestAnimationFrame(Redraw);
+				renderer.render(scene, camera);
+			};
+			
+			<!-- function onResize(){ -->
+				<!-- renderer.setSize(canvas.clientWidth, canvas.clientHeight); -->
+				<!-- caspect = canvas.clientWidth / canvas.clientHeight; // 縦横比 -->
+				<!-- camera.aspect = caspect; -->
+				<!-- camera.updateProjectionMatrix(); -->
+			<!-- }; -->
+			// ======================================================
+			let openStl = (file) => {
+				let reader = new FileReader();
+				reader.addEventListener("load", (e) => {
+					let buffer = e.target.result;
+					//====================================
+					scene.remove(mshSTL);
+					
+					matSTL= new THREE.MeshStandardMaterial({
+						side: THREE.DoubleSide,
+						color: 0xFFC355,
+						roughness: 0,
+						metalness: 0.4
+					});
+					//====================================
+					mshSTL= new THREE.Mesh(loadStl(buffer), matSTL);
+					mshSTL.castShadow = true;
+					mshSTL.receiveShadow = true;
+					
+					// mm -> m
+					<!-- mshSTL.position.set( mshSTL.position.x * 0.001, mshSTL.position.y * 0.001, mshSTL.position.z * 0.001); -->
+					mshSTL.scale.set(0.001, 0.001, 0.001);
+					
+					// Get Boundinng Box
+					let group = new THREE.Group();
+					group.add( mshSTL );
+					let bb = new THREE.Box3().setFromObject(group);
+					let bbsize = bb.getSize(new THREE.Vector3());
+					
+					// Move the mouse center to the centroid of the loaded model
+					let mcent = mshSTL.geometry.center();
+					
+					controls.addEventListener( 'change', Redraw );
+					controls.target.set( 0, 0, 0);
+					controls.update();
+					
+					scene.add(mshSTL);
+					spotLight.target = mshSTL;
+					
+					Redraw();
+					//====================================
+				}, false);
+				
+				reader.readAsArrayBuffer(file);
+			};
+			// ======================================================
+			let loadStl = (() => {
+				//=====================================================
+				let binaryVector3 = function (view, offset) {
+					let v = new THREE.Vector3();
+					v.x = view.getFloat32(offset + 0, true);
+					v.y = view.getFloat32(offset + 4, true);
+					v.z = view.getFloat32(offset + 8, true);
+					return v;
+				};
+				//=====================================================
+				let loadBinaryStl = function (buffer) {
+					// binary STL
+					let view = new DataView(buffer);
+					let size = view.getUint32(80, true);
+					let geom = new THREE.Geometry();
+					let offset = 84;
+					for (let i = 0; i < size; i++) {
+						let normal = binaryVector3(view, offset);
+						geom.vertices.push(binaryVector3(view, offset + 12));
+						geom.vertices.push(binaryVector3(view, offset + 24));
+						geom.vertices.push(binaryVector3(view, offset + 36));
+						geom.faces.push(
+							new THREE.Face3(i * 3, i * 3 + 1, i * 3 + 2, normal));
+						offset += 4 * 3 * 4 + 2;
+					}
+					return geom;
+				};
+				//=====================================================
+				let m2vec3 = function (match) {
+					let v = new THREE.Vector3();
+					v.x = parseFloat(match[1]);
+					v.y = parseFloat(match[2]);
+					v.z = parseFloat(match[3]);
+					return v;
+				};
+				//=====================================================
+				let toLines = function (array) {
+					let lines = [];
+					let h = 0;
+					for (let i = 0; i < array.length; i++) {
+						if (array[i] === 10) {
+							let line = String.fromCharCode.apply(
+								null, array.subarray(h, i));
+							lines.push(line);
+							h = i + 1;
+						}
+					}
+					lines.push(String.fromCharCode.apply(null, array.subarray(h)));
+					return lines;
+				}
+				//=====================================================
+				let loadTextStl = function (buffer) {
+					let lines = toLines(new Uint8Array(buffer));
+					let index = 0;
+					
+					let scan = function (regexp) {
+						while (lines[index].match(/^\s*$/)) index++;
+						let r = lines[index].match(regexp);
+						return r;
+					};
+					//-----------------------------------------------
+					let scanOk = function (regexp) {
+						let r = scan(regexp);
+						if (!r) throw new Error(
+							"not text stl: " + regexp.toString() + 
+							"=> (line " + (index - 1) + ")" +	 
+							"[" + lines[index-1] + "]");
+						index++;
+						return r;
+					};
+					//-----------------------------------------------
+					let facetReg = /^\s*facet\s+normal\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)/;
+					let vertexReg = /^\s*vertex\s+([^s]+)\s+([^\s]+)\s+([^\s]+)/;
+					let geom = new THREE.Geometry();
+					scanOk(/^\s*solid\s(.*)/);
+					while (!scan(/^\s*endsolid/)) {
+						let normal = scanOk(facetReg);
+						scanOk(/^\s*outer\s+loop/);
+						let v1 = scanOk(vertexReg);
+						let v2 = scanOk(vertexReg);
+						let v3 = scanOk(vertexReg);
+						scanOk(/\s*endloop/);
+						scanOk(/\s*endfacet/);
+						let base = geom.vertices.length;
+						geom.vertices.push(m2vec3(v1));
+						geom.vertices.push(m2vec3(v2));
+						geom.vertices.push(m2vec3(v3));
+						geom.faces.push(
+						new THREE.Face3(base, base + 1, base + 2, m2vec3(normal)));
+					};
+					return geom;
+				};
+				//=====================================================
+				return function (buffer) {
+					try {
+						console.log("load as text stl");
+						return loadTextStl(buffer);
+					} catch (ex) {
+						console.log(ex);
+						console.log("load as binary stl");
+						return loadBinaryStl(buffer);
+					}
+				}; 
+				//=====================================================
+			})();
+			////////////////////////////////////////////////////////////////////////////////////
 			// ======================================================
 			//Hamburger menu
 			const mobileMenu = document.getElementById("mobile-menu");
@@ -290,5 +584,7 @@
 			// ======================================================
 		</script>
 		<script src="./public/scripts/bootstrap@5.2.3.bundle.min.js" type="text/javascript"></script>
+		<script src="./app/three.js/three.js"></script>
+		<script src="./app/three.js/OrbitControls.js"></script>
 	</body>
 </html>
