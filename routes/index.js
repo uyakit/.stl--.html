@@ -101,6 +101,25 @@ router.get("/", (req, res) => {
 router.post("/", upload.any(), (req, res) => {
 	clearPngHtml("./app/PyVista/");
 	
+	console.log('# req.files : ' + req);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// sout
 	console.log('# originalname : ' + req.files[0].originalname);
 	// console.log('# destination : ' + req.files[0].destination);
