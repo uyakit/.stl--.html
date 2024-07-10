@@ -7,7 +7,7 @@ date: Released under the [MIT License](https://opensource.org/licenses/mit-licen
 ### Introduction
 
 <p style="text-indent:2em; font-size: 115%;">
-Embed .stl data <font color="MediumSeaGreen">just in one .html</font> file together with <font color="MediumSeaGreen">the mouse control</font>.
+Embed .stl model just in <font color="MediumSeaGreen">a standalone .html</font> file together with <font color="MediumSeaGreen">the mouse control</font>.
 </p>
 
 ### Requirements
@@ -30,7 +30,7 @@ Available now; No more additional installations needed.
 
 2. Specify a .stl file to be embedded.
 
-3. Click 'Download .html' button to download 'all-in-one' .html file.
+3. Click [Download 'standalone' .html] button to download 'all-in-one' .html file.
 </p>
 
 ![](./stl2html.js.gif){ width=90% }

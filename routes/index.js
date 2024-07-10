@@ -39,16 +39,17 @@ function copyf(path_from, path_to)
 	});
 }
 //==================================================================
-function exec_stl2html(fname)
+function exec_stl2html(path_stl)
 {
+	let fname_stl = path.basename(path_stl)
 	// ------------------------------------------------------
 	// .stl -> .html
 	//
 	// https://t-salad.com/node-exe/
 	// subproc.execSync('py ./app/PyVista/stl2html.py  ./stl2html.stl');
-	subproc.execSync('C:/home/python3111x64/python.exe  ./app/PyVista/stl2html.py  "./' + fname + '"');
-	subproc.execSync('C:/home/python3111x64/python.exe  ./app/PyVista/stl2png.py  ./' + path.parse(fname).name + '.stl');
-	copyf('./app/PyVista/' + path.parse(fname).name + '.stl.png', './app/PyVista/stl2html_Mesh.png');
+	subproc.execSync('C:/home/python3111x64/python.exe  ./app/PyVista/stl2html.py  "./' + fname_stl + '"');
+	subproc.execSync('C:/home/python3111x64/python.exe  ./app/PyVista/stl2png.py  ./' + path.parse(fname_stl).name + '.stl');
+	copyf('./app/PyVista/' + path.parse(fname_stl).name + '.stl.png', './app/PyVista/stl2html_Mesh.png');
 	// ------------------------------------------------------
 }
 //==================================================================
@@ -59,11 +60,11 @@ function clearPngHtml(dir)
 	
 	arrFiles.forEach(fname => {
 		if (path.parse(fname).ext == ".png" || path.parse(fname).ext == ".html") {
-			fs.unlink((dir + fname), (error) => {
+			fs.unlink(path.join(dir, fname), (error) => {
 				if (error != null) {
 					console.log(error);
 				} else {
-					console.log((dir + fname) + " : deleted");
+					console.log(path.join(dir, fname) + " : deleted");
 				}
 			});
 		}
@@ -73,19 +74,21 @@ function clearPngHtml(dir)
 function clearPngStlHtml(dir)
 {
 	const arrDirFiles = fs.readdirSync(dir, { withFileTypes: true });
+	// ------------------------------------------------------
 	const arrFiles = arrDirFiles.filter(dirent => dirent.isFile()).map(({ name }) => name);
 	
 	arrFiles.forEach(fname => {
 		if (path.parse(fname).ext == ".png" || path.parse(fname).ext == ".stl" || path.parse(fname).ext == ".html") {
-			fs.unlink((dir + fname), (error) => {
-				if (error != null) {
-					console.log(error);
+			fs.unlink(path.join(dir, fname), (err) => {
+				if (err != null) {
+					console.log(err);
 				} else {
-					console.log((dir + fname) + " : deleted");
+					console.log(path.join(dir, fname) + " : deleted");
 				}
 			});
 		}
 	});
+	// ------------------------------------------------------
 }
 //==================================================================
 // https://zenn.dev/wkb/books/node-tutorial/viewer/todo_03
@@ -101,28 +104,9 @@ router.get("/", (req, res) => {
 router.post("/", upload.any(), (req, res) => {
 	clearPngHtml("./app/PyVista/");
 	
-	console.log('# req.files : ' + req);
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	// sout
 	console.log('# originalname : ' + req.files[0].originalname);
-	// console.log('# destination : ' + req.files[0].destination);
+	console.log('# destination : ' + req.files[0].destination);
 	let fname_html = req.files[0].originalname.split('.').slice(0, -1).join('.') + '.html';
 	console.log();
 	console.log('loaded : ');

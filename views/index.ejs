@@ -28,7 +28,7 @@
 						</div>
 						<br>
 						<div id="upPrev" style="text-align:right; color:rgba(21, 153, 191, 0.8); font-weight:bold">
-							<p style="text-align:left; color:rgba(86, 43, 186, 0.8); font-weight:bold;"># Drop a .stl file to be embedded within the 3D window below</p>
+							<p style="text-align:left; color:rgba(86, 43, 186, 0.8); font-weight:bold;"># Drop a .stl file to be embedded within the 3D window below.</p>
 							<div id="canvas" style="width:600px;height:400px;margin:auto;" />
 							<input type="file" name="uploadFile" id="uploadFile" accept=".stl" style="display:none;" />
 						</div>
@@ -61,7 +61,6 @@
 		<script>
 			"use strict";
 			////////////////////////////////////////////////////////////////////////////////////
-
 			const btn = document.getElementById('btnSubmit');
 			const box = document.getElementById('spinnerWrap');
 			const dvb = document.getElementById('watchRes');
@@ -199,7 +198,7 @@
 				}
 			};
 			
-			func = new funcClass();	
+			func = new funcClass();
 			// ======================================================
 			let scene;
 			let camera;
@@ -245,6 +244,7 @@
 				dvb.style.display = 'none';
 				imb.style.display = 'none';
 				
+				sbmtRes.style.display = 'none';
 				btn.disabled = true;
 				func.ready();
 				//----------------------------------------------------------
@@ -537,6 +537,16 @@
 				}; 
 				//=====================================================
 			})();
+			
+			btn.addEventListener('click', (e) => {
+				setTimeout( () => {
+					box.style.display = 'block';
+					dvb.style.display = 'block';
+					imb.style.display = 'block';
+					
+					sbmtRes.style.display = 'block';
+				}, 300);
+			});
 			////////////////////////////////////////////////////////////////////////////////////
 			// ======================================================
 			//Hamburger menu

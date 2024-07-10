@@ -12,3 +12,21 @@
 [2024-07-10T16:05:08.783] [ERROR] application - EPERM: operation not permitted, copyfile 'C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\example.stl.png' -> 'C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\stl2html_Mesh.png'
 [2024-07-10T16:05:41.742] [INFO] application - Application listening at :3000
 [2024-07-10T16:05:53.125] [INFO] application - Application listening at :3000
+[2024-07-10T17:12:53.791] [INFO] application - Application listening at :3000
+[2024-07-10T17:16:07.349] [ERROR] application - EPERM: operation not permitted, copyfile 'C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\example.stl.png' -> 'C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\stl2html_Mesh.png'
+[2024-07-10T17:54:54.760] [INFO] application - Application listening at :3000
+[2024-07-10T17:55:30.666] [ERROR] application - fname is not defined
+[2024-07-10T17:58:28.258] [INFO] application - Application listening at :3000
+[2024-07-10T17:59:03.955] [ERROR] application - Command failed: C:/home/python3111x64/python.exe  ./app/PyVista/stl2png.py  ./example.stl.stl
+Traceback (most recent call last):
+  File "C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\stl2png.py", line 116, in <module>
+    main()
+  File "C:\Users\uyasp\Desktop\Node.js\Express.js\stl2html.js\app\PyVista\stl2png.py", line 53, in main
+    mesh_stl = mesh.Mesh.from_file(path_stl)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\home\python3111x64\Lib\site-packages\stl\stl.py", line 389, in from_file
+    with open(filename, 'rb') as fh:
+         ^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:/Users/uyasp/Desktop/Node.js/Express.js/stl2html.js/app/PyVista/example.stl.stl'
+
+[2024-07-10T18:01:12.835] [INFO] application - Application listening at :3000
