@@ -11,6 +11,70 @@
 		<link rel="stylesheet" href="/views/stylesheets/common.css" />
 		<link rel="stylesheet" href="/views/stylesheets/bootstrap.4.3.1.min.css" />  <!-- https://getbootstrap.jp/docs/4.5/getting-started/introduction/ -->
 		<link rel="stylesheet" href="/views/stylesheets/spinner.css" />
+		<style>
+			/* https://digipress.info/tech/css-spinner-animation-demo/  */
+			
+			.spinner_ready {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				transform-origin: center;
+				width: 160px;
+				height: 160px;
+			}
+			.spinner_ready span {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				font-size: 14.5px;
+			}
+			.spinner_ready.crcl {
+				border-radius: 50%;
+				border-width: 15px;
+				border-style: solid;
+				border-color: rgba(245, 245, 245, 0.32) rgba(245, 245, 245, 0.08) rgba(245, 245, 245, 0.24);
+				-webkit-animation: spinner_crcl 1.5s infinite linear forwards;
+				animation: spinner_crcl 1.5s infinite linear forwards;
+			}
+			.spinner_ready.crcl span {
+				color:rgba(245, 245, 245, 0.5);
+				animation: spinner_loading_text 1.5s infinite linear forwards reverse;
+			}
+			
+			@-webkit-keyframes spinner_crcl {
+				0% {
+					transform: translate(-50%, -50%) rotate(0);
+				}
+				100% {
+					transform: translate(-50%, -50%) rotate(360deg);
+				}
+			}
+			
+			@keyframes spinner_crcl {
+				0% {
+					transform: translate(-50%, -50%) rotate(0);
+				}
+				100% {
+					transform: translate(-50%, -50%) rotate(360deg);
+				}
+			}
+			@keyframes spinner_loading_text {
+				0% {
+					opacity: 1;
+					transform: translate(-50%, -50%) rotate(0deg);
+				}
+				50% {
+					opacity: 0;
+					transform: translate(-50%, -50%) rotate(180deg);
+				}
+				100% {
+					opacity: 1;
+					transform: translate(-50%, -50%) rotate(360deg);
+				}
+			}
+		</style>
 	</head>
 	
 	<body>
@@ -27,11 +91,15 @@
 							<a href="./public/MarbleBust.stl" download="MarbleBust.stl" target="_blank" style="color:rgba(21, 153, 191, 0.8);"># <u>Sample .stl to test</u>&nbsp;[3.4 MB]</a>
 						</div>
 						<br>
-						<div id="upPrev" style="text-align:right; color:rgba(21, 153, 191, 0.8); font-weight:bold">
-							<p style="text-align:left; color:rgba(86, 43, 186, 0.8); font-weight:bold;"># Drop a .stl file to be embedded within the 3D window below.</p>
-							<div id="canvas" style="width:600px;height:400px;margin:auto;" />
-							<input type="file" name="uploadFile" id="uploadFile" accept=".stl" style="display:none;" />
+						<p style="text-align:left; color:rgba(86, 43, 186, 0.8); font-weight:bold;"># Drop a .stl file to be embedded within the 3D window below.</p>
+						<div id="DrawWnd" style="position: relative;">
+							<div id="spinner_ready" class="spinner_ready crcl" style="z-index: 10;">
+								<span>Drop now</span>
+							</div>
+							<div id="canvas" style="z-index: 20; width:400px; height:300px; margin:auto;">
+							</div>
 						</div>
+						<input type="file" name="uploadFile" id="uploadFile" accept=".stl" style="display:none;" />
 						<div id="upPrev" style="text-align:right; color:rgba(21, 153, 191, 0.8); font-weight:bold">
 							<p id="file_prop" style="text-align:right; color:rgba(21, 153, 191, 0.8); font-weight:bold"></p>
 						</div>
@@ -52,20 +120,22 @@
 			<%- include("./_share/footer.ejs") %>
 		</div>
 		
-		<div id="spinnerWrap" class="box">
+		<div id="spinnerWrap" class="box">>
 			<div id="spinner" class="spinner crcl" style="color:rgba(10, 252, 82, 0.9);">
 				<span>Processing...</span>
 			</div>
 		</div>
 		
+		
 		<script>
-			"use strict";
+			'use strict';
 			////////////////////////////////////////////////////////////////////////////////////
-			const btn = document.getElementById('btnSubmit');
-			const box = document.getElementById('spinnerWrap');
-			const dvb = document.getElementById('watchRes');
-			const imb = document.getElementById('blockSpinner');
+			const btnSubmit = document.getElementById('btnSubmit');
+			const spinnerWrap = document.getElementById('spinnerWrap');
+			const watchRes = document.getElementById('watchRes');
+			const blockSpinner = document.getElementById('blockSpinner');
 			const canvas = document.getElementById('canvas');
+			const spinner_ready = document.getElementById('spinner_ready');
 			// ------------------------------------------------------
 			function dateNow() {
 				// https://www.tohoho-web.com/js/date.htm#getset
@@ -83,9 +153,9 @@
 			}
 			// ------------------------------------------------------
 			function hideSpinner(elem, span){
-				box.style.display = 'none';
-				dvb.style.display = 'none';
-				imb.style.display = 'none';
+				spinnerWrap.style.display = 'none';
+				watchRes.style.display = 'none';
+				blockSpinner.style.display = 'none';
 				
 				setTimeout( () => {
 					elem.src = "../app/PyVista/blockSpinner.png" + "?" + dateNow();
@@ -93,9 +163,9 @@
 			}
 			
 			function reloadImg(elem, span){
-				box.style.display = 'block';
-				dvb.style.display = 'block';
-				imb.style.display = 'block';
+				spinnerWrap.style.display = 'block';
+				watchRes.style.display = 'block';
+				blockSpinner.style.display = 'block';
 				
 				setTimeout( () => {
 					elem.src = "../app/PyVista/blockSpinner.png" + "?" + dateNow();
@@ -185,7 +255,7 @@
 					if(ext == 'stl') {
 						if(file.size < (20 * Math.pow(1024, 2))) {
 							document.getElementById('file_prop').innerText = file.name + '\n( ' + Math.ceil((file.size)/1024).toLocaleString() + ' KB)';
-							document.getElementById("btnSubmit").disabled = false;
+							document.getElementById('btnSubmit').disabled = false;
 						} else {
 							alert(".stl available just under '20MB' !");
 						}
@@ -239,13 +309,13 @@
 			};
 			//====================================
 			////////////////////////////////////////////////////////////////////////////////////
-			window.addEventListener("load", (e) => {
-				box.style.display = 'none';
-				dvb.style.display = 'none';
-				imb.style.display = 'none';
-				
+			window.addEventListener('load', (e) => {
+				spinnerWrap.style.display = 'none';
+				watchRes.style.display = 'none';
+				blockSpinner.style.display = 'none';
+				spinner_ready.style.display = 'none';
 				sbmtRes.style.display = 'none';
-				btn.disabled = true;
+				btnSubmit.disabled = true;
 				func.ready();
 				//----------------------------------------------------------
 				cvec = new THREE.Vector3(0.5, -3, 1.5);
@@ -256,7 +326,7 @@
 				//----------------------------------------------------------
 				// renderer
 				
-				renderer = new THREE.WebGLRenderer({"antialias" : true});
+				renderer = new THREE.WebGLRenderer({'antialias' : true});
 				renderer.setSize(canvas.clientWidth, canvas.clientHeight); // レンダラーサイズをdivサイズに
 				
 				renderer.setClearColor(colBkgrd, 1.0);
@@ -304,15 +374,46 @@
 				//----------------------------------------------------------
 			}, false);
 			////////////////////////////////////////////////////////////////////////////////////
-			canvas.addEventListener("dragover", (e) => {
+			canvas.addEventListener('dragenter',  {handleEvent: evntDragEnter}, false);
+			spinner_ready.addEventListener('dragenter',  {handleEvent: evntDragEnter}, false);
+			
+			function evntDragEnter(e) {
 				e.stopPropagation();
 				e.preventDefault();
-				e.dataTransfer.dropEffect = "copy";
-			}, false);
+				
+				spinner_ready.style.display = 'block';
+			}
 			////////////////////////////////////////////////////////////////////////////////////
-			canvas.addEventListener("drop", (e) => {
+			canvas.addEventListener('dragover',  {handleEvent: evntDragOver}, false);
+			spinner_ready.addEventListener('dragover',  {handleEvent: evntDragOver}, false);
+			
+			function evntDragOver(e) {
 				e.stopPropagation();
 				e.preventDefault();
+				
+				e.dataTransfer.dropEffect = 'copy';
+				
+				spinner_ready.style.display = 'block';
+			}
+			////////////////////////////////////////////////////////////////////////////////////
+			canvas.addEventListener('dragleave',  {handleEvent: evntDragLeave}, false);
+			spinner_ready.addEventListener('dragleave',  {handleEvent: evntDragLeave}, false);
+			
+			function evntDragLeave(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				
+				spinner_ready.style.display = 'none';
+			}
+			////////////////////////////////////////////////////////////////////////////////////
+			canvas.addEventListener('drop', {handleEvent: evntDrop}, false);
+			spinner_ready.addEventListener('drop', {handleEvent: evntDrop}, false);
+			
+			function evntDrop(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				
+				spinner_ready.style.display = 'none';
 				
 				let ext = e.dataTransfer.files[0].name.split(".").pop();
 				if(ext == 'stl') {
@@ -327,11 +428,11 @@
 				} else {
 					alert('Just .stl available !');
 				}
-			}, false);
+			}
 			////////////////////////////////////////////////////////////////////////////////////
 			let loadStl = (file) => {
 				let reader = new FileReader();
-				reader.addEventListener("load", (e) => {
+				reader.addEventListener('load', (e) => {
 					//====================================
 					// Reset
 					
@@ -538,11 +639,11 @@
 				//=====================================================
 			})();
 			
-			btn.addEventListener('click', (e) => {
+			btnSubmit.addEventListener('click', (e) => {
 				setTimeout( () => {
-					box.style.display = 'block';
-					dvb.style.display = 'block';
-					imb.style.display = 'block';
+					spinnerWrap.style.display = 'block';
+					watchRes.style.display = 'block';
+					blockSpinner.style.display = 'block';
 					
 					sbmtRes.style.display = 'block';
 				}, 300);
@@ -550,12 +651,12 @@
 			////////////////////////////////////////////////////////////////////////////////////
 			// ======================================================
 			//Hamburger menu
-			const mobileMenu = document.getElementById("mobile-menu");
-			const navList = document.querySelector(".nav-list");
+			const mobileMenu = document.getElementById('mobile-menu');
+			const navList = document.querySelector('.nav-list');
 			
-			mobileMenu.addEventListener("click", () => {
-				navList.classList.toggle("nav-active");
-				mobileMenu.classList.toggle("toggle");
+			mobileMenu.addEventListener('click', () => {
+				navList.classList.toggle('nav-active');
+				mobileMenu.classList.toggle('toggle');
 			});
 			// ======================================================
 		</script>
