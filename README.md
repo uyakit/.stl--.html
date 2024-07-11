@@ -30,7 +30,7 @@ Available now; No more additional installations needed.
 
 2. Specify a .stl file to be embedded.
 
-3. Click [Download 'standalone' .html] button to download 'all-in-one' .html file.
+3. Click <b> Download 'standalone' .html</b> button to download 'all-in-one' .html file.
 </p>
 
 ![](./stl2html.js.gif){ width=90% }
