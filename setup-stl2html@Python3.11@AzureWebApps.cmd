@@ -1,8 +1,8 @@
-REM ###################
-REM ## Python 3.11 用
-REM ###################
+:: ###################
+:: ## Python 3.11 用
+:: ###################
 
-REM https://qiita.com/natsuriver/items/72a5e180c1a65a8c8e92#linux-%E3%81%AE%E5%A0%B4%E5%90%88
+:: https://qiita.com/natsuriver/items/72a5e180c1a65a8c8e92#linux-%E3%81%AE%E5%A0%B4%E5%90%88
 
 
 set PATH=%PATH%;C:\home\python3111x64\;C:\home\python3111x64\Scripts

@@ -1,8 +1,8 @@
-REM ###################
-REM ## Python 20.12.2 用
-REM ###################
+:: ###################
+:: ## Python 20.12.2 用
+:: ###################
 
-REM https://reffect.co.jp/node-js/express-js-file-upload
+:: https://reffect.co.jp/node-js/express-js-file-upload
 
 npm install express
 npm install nodemon --save-dev
